@@ -1,0 +1,95 @@
+public class Kort { // Skapa instansvariabeln för kort namn och nummer.
+    private String namn;
+    private int nummer;
+    // Skapa konstruktor
+    public Kort(String namn, int nummer) { // tilldelad parameter i variabeln.
+        this.namn = namn;
+        this.nummer = nummer;
+    }
+    public int getNummer() { //Skapa metoden att få kort nummeret och returnerar detta nummeret.
+        return nummer;
+    }
+    public String toString(){ // Använda toString metoden för att returnera namn och nummer.
+        return namn + " " + nummer;
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class KortSpel21 {
+    // Skapa kort dek genom användning list array.
+    private List<Kort> dek = new ArrayList<Kort>();
+    public KortSpel21 (){
+        for(int i= 1; i<= 13; i++){
+            dek.add(new Kort("Spader", i));
+            dek.add(new Kort("Hjärter", i));
+            dek.add(new Kort("Ruter", i));
+            dek.add(new Kort("Klöver", i));
+        }
+        Collections.shuffle(dek); // Collections class och shuffle-metod som används för att blanda däcket.
+
+    }
+    public Kort draÖverstaKort(){ // Skapa metoden för att dra översta kort
+       if( dek.size() > 0)
+        return dek.remove(0);
+        else
+            return null;
+    }
+    public static void main(String[] args) {
+        // Skapa instans av KoerSpel21
+        KortSpel21 Spel = new KortSpel21();
+        int användarpoäng = 0; // Skapa variabel för anvaändare poäng
+        int datorpoäng = 0;    // Skapa variabel för dator poäng
+
+        while (användarpoäng <= 21 && datorpoäng <= 21){
+            // Skapa meddelandedialogruta där användaren kan välja alternativet för att dra kort eller inte.
+            boolean användaren_vill_kort = JOptionPane.showConfirmDialog(null,"Vill du ta mer kort?") == 0;
+            if (användaren_vill_kort ){
+                Kort överstaKort = Spel.draÖverstaKort();
+                System.out.println("Användarens Översta kort " + överstaKort);
+                användarpoäng = användarpoäng + överstaKort.getNummer();
+                System.out.println(" Användarens poäng " + användarpoäng);
+
+            }
+
+            boolean datorn_vill_kort = datorpoäng < 21 && användarpoäng < 21; //Skapa logik för datorn att bestämma sig
+            // för att ta mer kort eller inte.
+            if (datorn_vill_kort) {
+                Kort topCard = Spel.draÖverstaKort();
+                System.out.println("Datorn Översta kort "+topCard);
+                datorpoäng = datorpoäng + topCard.getNummer();
+                System.out.println(" Datorn poäng "+datorpoäng);
+
+            }
+            if(!användaren_vill_kort && !datorn_vill_kort){
+                break;
+            }
+        }
+        // Skapa villkor för att förklara vinnaren och lösare.
+            if(användarpoäng > 21) {
+                System.out.println("Användaren förlorar och datorn vinner");
+            }
+            else if (datorpoäng > 21){
+                    System.out.println("datorn förlorar och användaren vinner");
+                }
+            else {
+                if(användarpoäng > datorpoäng){
+                    System.out.println("datorn förlorar och användaren vinner");
+                }
+                else if(datorpoäng > användarpoäng){
+                    System.out.println("Användaren förlorar och datorn vinner");
+                }
+                else {
+                    System.out.println("Spelet är oavgjort");
+                }
+            }
+
+
+    }
+
+}
